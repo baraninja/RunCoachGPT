@@ -20,8 +20,10 @@ Inspired by the rowing workout script by Amadeusz Juskowiak <juskowiak@amadeusz.
 (function() {
     'use strict';
 
+    // Retrieve OpenAI API key from local storage
     var openai_api_key = localStorage.getItem("OPENAI_KEY");
 
+    // Define the context prompt for the GPT-3 model
     let context_prompt =
 `You are an expert running coach with experience in various types of running including long distance, trail, short track, and indoor running.
 You need to prepare workout plans in following JSON format:
@@ -52,7 +54,9 @@ Note there can be multiple segments (in case of intervals). Use good motivationa
 Intensity cannot be arrays.
 Also give me a funny joke at the end.`;
 
+    // Function to validate the OpenAI API key
     var validate_openai_api_key = function() {
+        // If the key is not found in local storage, prompt the user to enter it
         if (!openai_api_key) {
             var k = prompt("Please enter your OpenAI personal key, it will be stored in a local storage");
             if (k) {
@@ -64,20 +68,26 @@ Also give me a funny joke at the end.`;
         }
     };
 
+    // Function to get the user's workout prompt
     var get_prompt = function() {
         var k = prompt("Please provide what you need from your virtual coach:", "Hi, I need a long distance running workout for 2 hours");
         return k;
     };
 
+    // Function to remove existing workout steps
     var remove_workout_steps = function() {
         $('a[aria-label="Delete Step"]').each(function() { this.click(); });
     };
 
+    // Function to pad a string with leading zeros
     var pad = function(str, max) {
         str = str.toString();
         return str.length < max ? pad("0" + str, max) : str;
     }
+
+    // Function to add a workout step
     var add_step = function(name, quote, distance, duration, intensity) {
+        // Code to add the workout step
         let h = Math.floor(duration / 3600);
         let m = Math.floor(duration / 60 - h * 60);
         let s = Math.floor(duration - h * 3600 - m * 60);
@@ -116,9 +126,11 @@ Also give me a funny joke at the end.`;
         $('.workout-step-done-editing').last().click();
     };
 
+    // Function to send a request to the GPT-3 model
     var ask_chatgpt = function(p) {
         var r;
         $.ajax({
+            // AJAX request details
             url: "https://api.openai.com/v1/chat/completions",
             contentType: 'application/json',
             headers: {
@@ -142,7 +154,9 @@ Also give me a funny joke at the end.`;
         return r;
     };
 
+// Function to add the "Generate Running Workout" button
 var add_button = function() {
+    // Code to add the button
     var save_workout = $('#save-workout');
     var generate_workout = save_workout.before('<a href="#" id="generate-workout" class="btn btn-medium save-edit-workout" aria-disabled="false">Generate Running Workout</a>&nbsp;');
 
@@ -168,6 +182,8 @@ var add_button = function() {
     });
 };
 
+// Validate the OpenAI API key
 validate_openai_api_key();
+// Add the "Generate Running Workout" button after a delay of 4 seconds
 setTimeout(add_button, 4000);
 })();
