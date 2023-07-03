@@ -2,7 +2,9 @@
 
 ## Description
 
-This is a userscript that generates custom running workouts using OpenAI's GPT-3 model. It's designed to be used on Garmin Connect's workout creation page.
+This is a userscript that generates custom running workouts using OpenAI's GPT-3 model. It's designed to be used on Garmin Connect's workout creation page. 
+
+It's inspired by the rowing workout script you can find here: https://gist.github.com/alfanick/3ecac79f9590bae6819e410c33878774
 
 ## Installation
 
